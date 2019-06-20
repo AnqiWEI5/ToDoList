@@ -1,18 +1,20 @@
 package com.example.td_wang_yang_wei.Database.Entities;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(indices = {@Index(value = {"id"})},
-tableName = "users")
+@Entity(indices = {@Index(value = {"id"})},tableName = "users")
 public class User {
 
     @PrimaryKey
     public int id;
 
+    @ColumnInfo(name = "pseudo")
     public String pseudo;
 
+    @ColumnInfo(name = "motDePasse")
     public String motDePasse;
 
     public int getId(){

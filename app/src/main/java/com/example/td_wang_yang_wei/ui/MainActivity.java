@@ -17,8 +17,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.td_wang_yang_wei.DataClass.ListeDeUtilisateur;
-import com.example.td_wang_yang_wei.DataClass.Utilisateur;
+import com.example.td_wang_yang_wei.DataProvider;
+import com.example.td_wang_yang_wei.api.ListeDeUtilisateur;
+import com.example.td_wang_yang_wei.api.Utilisateur;
 import com.example.td_wang_yang_wei.Database.AppDatabase;
 import com.example.td_wang_yang_wei.Database.Dao.UserDao;
 import com.example.td_wang_yang_wei.R;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListeDeUtilisateur listeDeUtilisateur;
     private AppDatabase db;
     private UserDao userDao;
+    private DataProvider dataProvider;
+
 //    private PostAsyncTask task;
 
     //Alerter pour savoir le processus de la programme et alerter les utilisateurs
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dataProvider = new DataProvider(this);
 
         //Connection les layouts avec des backends
         btnSign=findViewById(R.id.btnSign);
