@@ -1,7 +1,8 @@
-package com.example.td_wang_yang_wei.DataClass;
+package com.example.td_wang_yang_wei.api;
 
 import java.io.Serializable;
 
+//postreponse相当于我的utilisateur
 public class Utilisateur implements Serializable {
     private String pseudo;
     private String motDePasse;

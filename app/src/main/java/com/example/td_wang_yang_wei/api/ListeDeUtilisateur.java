@@ -1,11 +1,10 @@
-package com.example.td_wang_yang_wei.DataClass;
-
-import com.example.td_wang_yang_wei.DataClass.Utilisateur;
+package com.example.td_wang_yang_wei.api;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+//postreponse liste
 public class ListeDeUtilisateur implements Serializable {
 
     private final String urlDefault="http://tomnab.fr/todo-api/";

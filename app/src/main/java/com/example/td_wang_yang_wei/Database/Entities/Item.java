@@ -8,9 +8,9 @@ import androidx.room.PrimaryKey;
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "items",
-        foreignKeys = @ForeignKey(entity = List.class,
+        foreignKeys = @ForeignKey(entity = Liste.class,
         parentColumns = "id",
-        childColumns = "list_id",
+        childColumns = "liste_id",
         onDelete = CASCADE))
 public class Item {
     @PrimaryKey
@@ -22,8 +22,8 @@ public class Item {
 
     public String checked;
 
-    @ColumnInfo(name = "list_id")
-    public String listId;
+    @ColumnInfo(name = "liste_id")
+    public String listeId;
 
 //    public String getId() {
 //        return id;

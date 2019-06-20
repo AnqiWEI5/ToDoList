@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.td_wang_yang_wei.DataClass.ListeDeUtilisateur;
-import com.example.td_wang_yang_wei.DataClass.Utilisateur;
+import com.example.td_wang_yang_wei.api.ListeDeUtilisateur;
+import com.example.td_wang_yang_wei.api.Utilisateur;
 import com.example.td_wang_yang_wei.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

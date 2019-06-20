@@ -11,10 +11,10 @@ import com.example.td_wang_yang_wei.Database.Dao.ItemDao;
 import com.example.td_wang_yang_wei.Database.Dao.ListDao;
 import com.example.td_wang_yang_wei.Database.Dao.UserDao;
 import com.example.td_wang_yang_wei.Database.Entities.Item;
-import com.example.td_wang_yang_wei.Database.Entities.List;
+import com.example.td_wang_yang_wei.Database.Entities.Liste;
 import com.example.td_wang_yang_wei.Database.Entities.User;
 
-@Database(entities = {User.class, List.class, Item.class}, version = 1)
+@Database(entities = {User.class, Liste.class, Item.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();

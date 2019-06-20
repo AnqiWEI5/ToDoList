@@ -1,6 +1,5 @@
 package com.example.td_wang_yang_wei.Database.Entities;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -9,21 +8,23 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "lists",
+@Entity(tableName = "listes",
         indices = {@Index("name"),@Index(value = {"id"})},
         foreignKeys = @ForeignKey(entity = User.class,
-        parentColumns = "id",
-        childColumns = "user_id",
-        onDelete = CASCADE))
-public class List {
+                parentColumns = "id",
+                childColumns = "user_id",
+                onDelete = CASCADE))
+public class Liste {
 
-    @PrimaryKey
-    public String id;
 
-    public String label;
 
-    @ColumnInfo(name = "user_id")
-    public String userId;
+        @PrimaryKey
+        public String id;
+
+        public String label;
+
+        @ColumnInfo(name = "user_id")
+        public String userId;
 
 //    public String getId() {
 //        return id;
@@ -44,4 +45,6 @@ public class List {
 //    public String getUserId(){ return userId;}
 //
 //    public void setUserId(String userId){this.userId = userId;}
+
+
 }

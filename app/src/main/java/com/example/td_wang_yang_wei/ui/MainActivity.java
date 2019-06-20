@@ -17,8 +17,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.td_wang_yang_wei.DataClass.ListeDeUtilisateur;
-import com.example.td_wang_yang_wei.DataClass.Utilisateur;
+import com.example.td_wang_yang_wei.api.ListeDeUtilisateur;
+import com.example.td_wang_yang_wei.api.Utilisateur;
 import com.example.td_wang_yang_wei.Database.AppDatabase;
 import com.example.td_wang_yang_wei.Database.Dao.UserDao;
 import com.example.td_wang_yang_wei.R;
