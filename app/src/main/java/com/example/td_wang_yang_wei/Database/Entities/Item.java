@@ -25,22 +25,22 @@ public class Item {
     @ColumnInfo(name = "liste_id")
     public String listeId;
 
-//    public String getId() {
-//        return id;
-//    }
-//
-//    public void setId(String id) {
-//        this.id = id;
-//    }
-//
-//    public String getLabel() {
-//        return label;
-//    }
-//
-//    public void setLabel() {
-//        this.label = label;
-//    }
-//
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = this.label;
+    }
+
 //    public Object getUrl() {
 //        return url;
 //    }
@@ -49,13 +49,13 @@ public class Item {
 //        this.url = url;
 //    }
 //
-//    public String getChecked() {
-//        return checked;
-//    }
-//
-//    public void setChecked(String checked) {
-//        this.checked = checked;
-//    }
+    public String getChecked() {
+        return checked;
+    }
+
+    public void setChecked(String checked) {
+        this.checked = checked;
+    }
 //
 //    public String getListId() {
 //        return listId;
