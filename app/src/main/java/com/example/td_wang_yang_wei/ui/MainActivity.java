@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        if(db!=null&&db.isOpen())db.close();
+       // if(db!=null&&db.isOpen())db.close();
     }
 
 //    private class PostAsyncTask extends AsyncTask<Void,Void, User[]> {
