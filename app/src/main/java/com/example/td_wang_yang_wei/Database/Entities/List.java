@@ -1,0 +1,47 @@
+package com.example.td_wang_yang_wei.Database.Entities;
+
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "lists",
+        indices = {@Index("name"),@Index(value = {"id"})},
+        foreignKeys = @ForeignKey(entity = User.class,
+        parentColumns = "id",
+        childColumns = "user_id",
+        onDelete = CASCADE))
+public class List {
+
+    @PrimaryKey
+    public String id;
+
+    public String label;
+
+    @ColumnInfo(name = "user_id")
+    public String userId;
+
+//    public String getId() {
+//        return id;
+//    }
+//
+//    public void setId(String id) {
+//        this.id = id;
+//    }
+//
+//    public String getLabel() {
+//        return label;
+//    }
+//
+//    public void setLabel() {
+//        this.label = label;
+//    }
+//
+//    public String getUserId(){ return userId;}
+//
+//    public void setUserId(String userId){this.userId = userId;}
+}

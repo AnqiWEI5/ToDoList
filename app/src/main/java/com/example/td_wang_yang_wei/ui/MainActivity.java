@@ -1,4 +1,4 @@
-package com.example.td_wang_yang_wei;
+package com.example.td_wang_yang_wei.ui;
 
 
 import android.content.Context;
@@ -19,6 +19,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.td_wang_yang_wei.DataClass.ListeDeUtilisateur;
 import com.example.td_wang_yang_wei.DataClass.Utilisateur;
+import com.example.td_wang_yang_wei.Database.AppDatabase;
+import com.example.td_wang_yang_wei.Database.Dao.UserDao;
+import com.example.td_wang_yang_wei.R;
 import com.example.td_wang_yang_wei.api.Contenu;
 import com.example.td_wang_yang_wei.api.requestService;
 import com.example.td_wang_yang_wei.api.requestServiceFactory;
@@ -41,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText edtPseudo = null;
     private EditText edtPasse=null;
     private ListeDeUtilisateur listeDeUtilisateur;
+    private AppDatabase db;
+    private UserDao userDao;
+//    private PostAsyncTask task;
 
     //Alerter pour savoir le processus de la programme et alerter les utilisateurs
     public void alerter(String s) {
@@ -88,8 +94,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else{
             btnOk.setEnabled(false);
         }
-
-
 
     }
 
@@ -159,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         @Override
                         public void onFailure(Call call, Throwable t) {
+                            alerter("pas de connexion");
                         }
                     });
                 }
@@ -283,4 +288,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        if(db!=null&&db.isOpen())db.close();
+    }
+
+//    private class PostAsyncTask extends AsyncTask<Void,Void, User[]> {
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            findViewById(R.id.progess).setVisibility(View.VISIBLE);
+//            Log.d("TAG","onPreExecute() called +" +Thread.currentThread().getName());
+//        }
+//
+//        @Override
+//        protected User[] doInBackground(Void... voids) {
+//            return userDao.getAllUsers();
+//        }
+//
+//        @Override
+//        protected void onPostExecute(User[] users) {
+//            super.onPostExecute(users);
+//            findViewById(R.id.progess).setVisibility(View.GONE);
+//        }
+//    }
 }
