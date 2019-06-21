@@ -19,7 +19,7 @@ public interface ItemDao {
     List<Item> findItemBylistId(String listId);
 
     @Insert
-    void postItem(Item item);
+    void saveItem(Item item);
 
     @Update
     void updateItem(Item item);

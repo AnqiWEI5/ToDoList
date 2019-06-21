@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.td_wang_yang_wei.DataProvider;
-import com.example.td_wang_yang_wei.Database.AppDatabase;
 import com.example.td_wang_yang_wei.R;
 import com.example.td_wang_yang_wei.api.Lists;
 import com.example.td_wang_yang_wei.api.NouveauListe;
@@ -36,7 +35,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.td_wang_yang_wei.Database.AppDatabase.db;
 
 public class ChoixListeActivity extends AppCompatActivity {
 
@@ -45,7 +43,6 @@ public class ChoixListeActivity extends AppCompatActivity {
     private Button btnListe;//pas grave car on ajoute une fonction de addnewlist sur ce bouton
 
     private RecyclerView recyclerView;
-   // private ListeAdapter listAdapter;
     private ListeAdapter listeAdapter;
 
     private String hash;
@@ -74,13 +71,13 @@ public class ChoixListeActivity extends AppCompatActivity {
         //créer adapter
         listeAdapter=new ListeAdapter((new ArrayList<String>()));
 
-        sync();
+//        sync();
 
         //creer un instance de requestService
-//        requestService = requestServiceFactory.createService(url, requestService.class);
+        requestService = requestServiceFactory.createService(url, requestService.class);
 
         //obtenir la liste de nom de liste dans cet utilisateur
-//        getListedeLabel(hash);
+        getListedeLabel(hash);
         getUserIdconneted(hash,pseudo);
 
         //afficher la liste de noms dans le RecyclerView
@@ -97,22 +94,22 @@ public class ChoixListeActivity extends AppCompatActivity {
         myToast.show();
     }
 //TODO:完善异步
-    private void sync() {
-        findViewById(R.id.progess).setVisibility(View.VISIBLE);
-
-        dataProvider.syncLists(url,new DataProvider.ListsListener() {
-            @Override public void onSuccess(List<com.example.td_wang_yang_wei.Database.Entities.List> lists) {
-                for (int i = 0; i< db.listDao().getAllLists().size(); i++) {
-                            listeAdapter.add(db.listDao().getAllLists().get(i).getLabel());
-                        }
-                findViewById(R.id.progess).setVisibility(View.GONE);
-            }
-
-            @Override public void onError() {
-                findViewById(R.id.progess).setVisibility(View.GONE);
-            }
-        });
-    }
+//    private void sync() {
+//        findViewById(R.id.progess).setVisibility(View.VISIBLE);
+//
+//        dataProvider.syncLists(url,new DataProvider.ListsListener() {
+//            @Override public void onSuccess(List<com.example.td_wang_yang_wei.Database.Entities.List> lists) {
+//                for (int i = 0; i< db.listDao().getAllLists().size(); i++) {
+//                            listeAdapter.add(db.listDao().getAllLists().get(i).getLabel());
+//                        }
+//                findViewById(R.id.progess).setVisibility(View.GONE);
+//            }
+//
+//            @Override public void onError() {
+//                findViewById(R.id.progess).setVisibility(View.GONE);
+//            }
+//        });
+//    }
 
 
     //TODO：将add转移至数据库
@@ -151,37 +148,38 @@ public class ChoixListeActivity extends AppCompatActivity {
 
     }
 
-//    /**
-//     * obtenir la liste de liste d'utilisateur courant
-//     * @param hash
-//     */
-//    public void getListedeLabel(String hash){
-//
-//        //Encapsuler la requête d'après les règles de Interface requestService
-//        Call<Lists> call = requestService.getLists(hash);
-//
-//        //Envoyer la requête et collecter les résultats
-//        //si succès récupérer des listes de l'utilisateur courant; le hash peut être fourni en chaîne de requête
-//        call.enqueue(new Callback<Lists>() {
-//            @Override
-//            public void onResponse(Call<Lists> call, Response<Lists> response) {
-//                if (response.isSuccessful()) {
-//                    if(!response.body().getLists().isEmpty()){
-//                        for (int i=0;i<response.body().getLists().size();i++) {
-//                            listeAdapter.add(response.body().getLists().get(i).getLabel());
-//                        }
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call call, Throwable t) {
-//                alerter("pas de connexion");
-//            }
-//        });
-//
-////    }
+    /**
+     * obtenir la liste de liste d'utilisateur courant
+     * @param hash
+     */
+    public void getListedeLabel(String hash){
+
+        //Encapsuler la requête d'après les règles de Interface requestService
+        Log.d("hash:",hash);
+        Call<Lists> call = requestService.getLists(hash);
+
+        //Envoyer la requête et collecter les résultats
+        //si succès récupérer des listes de l'utilisateur courant; le hash peut être fourni en chaîne de requête
+        call.enqueue(new Callback<Lists>() {
+            @Override
+            public void onResponse(Call<Lists> call, Response<Lists> response) {
+                if (response.isSuccessful()) {
+                    if(!response.body().getLists().isEmpty()){
+                        for (int i=0;i<response.body().getLists().size();i++) {
+                            listeAdapter.add(response.body().getLists().get(i).getLabel());
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                alerter("pas de connexion");
+            }
+        });
+
+    }
     private void getUserIdconneted(String hash, final String pseudo) {
 
         //Encapsuler la requête d'après les règles de Interface requestService

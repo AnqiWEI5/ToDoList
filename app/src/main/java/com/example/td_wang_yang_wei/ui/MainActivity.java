@@ -286,26 +286,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         return super.onOptionsItemSelected(item);
     }
-
-
-//    private class PostAsyncTask extends AsyncTask<Void,Void, User[]> {
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            findViewById(R.id.progess).setVisibility(View.VISIBLE);
-//            Log.d("TAG","onPreExecute() called +" +Thread.currentThread().getName());
-//        }
-//
-//        @Override
-//        protected User[] doInBackground(Void... voids) {
-//            return userDao.getAllUsers();
-//        }
-//
-//        @Override
-//        protected void onPostExecute(User[] users) {
-//            super.onPostExecute(users);
-//            findViewById(R.id.progess).setVisibility(View.GONE);
-//        }
-//    }
 }
