@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "lists",
-        indices = {@Index("name"),@Index(value = {"id"})},
+        indices = {@Index(value = {"id"})},
         foreignKeys = @ForeignKey(entity = User.class,
         parentColumns = "id",
         childColumns = "user_id",
@@ -25,23 +25,23 @@ public class List {
     @ColumnInfo(name = "user_id")
     public String userId;
 
-//    public String getId() {
-//        return id;
-//    }
-//
-//    public void setId(String id) {
-//        this.id = id;
-//    }
-//
-//    public String getLabel() {
-//        return label;
-//    }
-//
-//    public void setLabel() {
-//        this.label = label;
-//    }
-//
-//    public String getUserId(){ return userId;}
-//
-//    public void setUserId(String userId){this.userId = userId;}
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getUserId(){ return userId;}
+
+    public void setUserId(String userId){this.userId = userId;}
 }

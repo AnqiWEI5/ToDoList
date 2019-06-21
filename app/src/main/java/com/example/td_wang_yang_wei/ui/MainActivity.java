@@ -44,8 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText edtPseudo = null;
     private EditText edtPasse=null;
     private ListeDeUtilisateur listeDeUtilisateur;
-    private AppDatabase db;
-    private UserDao userDao;
 //    private PostAsyncTask task;
 
     //Alerter pour savoir le processus de la programme et alerter les utilisateurs
@@ -89,10 +87,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NetworkInfo networkInfo=netManager.getActiveNetworkInfo();
 
         if(networkInfo!=null){
-            btnOk.setEnabled(networkInfo.isConnected());
+            btnSign.setEnabled(networkInfo.isConnected());
                 }
         else{
-            btnOk.setEnabled(false);
+            btnSign.setEnabled(false);
         }
 
     }
@@ -181,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Utilisateur u=listeDeUtilisateur.ChercheUtilisateur(pseudo);
                         if(u.verifierMotDePasse(pass))
                             ConvertToListe(u.getPseudo(),u.getHash(),listeDeUtilisateur.getUrl());
-                         else alerter("Revévifiez votre mot de passe");
+                         else alerter("Revérifiez votre mot de passe");
                     }else {
                         //Si cet utilisateur n'appartient pas à la liste de préférences
                         //on fait la connexion auprès de l'API Renvoie un hash sans délai d'expiration
@@ -289,11 +287,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        if(db!=null&&db.isOpen())db.close();
-    }
 
 //    private class PostAsyncTask extends AsyncTask<Void,Void, User[]> {
 //

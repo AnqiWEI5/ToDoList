@@ -70,7 +70,7 @@ public class ShowListeActivity extends AppCompatActivity {
         itemAdapter = new ItemAdapter(new ArrayList<Item>());
 
         //creer un instance de requestService
-        requestService = requestServiceFactory.createService(url, requestService.class);
+        requestService = requestServiceFactory.createService(requestService.class);
 
         //obtenir les items de ce Liste
         getListedeItem(hash,listId);

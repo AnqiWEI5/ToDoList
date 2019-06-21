@@ -8,13 +8,15 @@ import androidx.room.Update;
 
 import com.example.td_wang_yang_wei.Database.Entities.Item;
 
+import java.util.List;
+
 @Dao
 public interface ItemDao {
     @Query("SELECT * FROM items")
-    Item[] getAllLists();
+    List<Item> getAllLists();
 
     @Query("SELECT * FROM items WHERE list_id LIKE:listId")
-    Item[] findItemBylistId(String listId);
+    List<Item> findItemBylistId(String listId);
 
     @Insert
     void postItem(Item item);

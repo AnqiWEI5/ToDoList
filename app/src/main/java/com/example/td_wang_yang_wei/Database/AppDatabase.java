@@ -21,7 +21,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ListDao listDao();
     public abstract ItemDao itemDao();
 
-    private static AppDatabase db;
+    public static AppDatabase db;
 
     public static AppDatabase getDatabase(final Context context){
         if (db == null) {

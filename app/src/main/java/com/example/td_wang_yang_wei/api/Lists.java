@@ -14,7 +14,7 @@ public class Lists {
     private int version;
     private boolean success;
     private int status;
-    private List<ListsBean> lists;
+    public static List<ListsBean> lists;
 
     public int getVersion() {
         return version;

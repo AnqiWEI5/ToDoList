@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ListeDeUtilisateur implements Serializable {
 
-    private final String urlDefault="http://tomnab.fr/todo-api/";
+    private static final String urlDefault="http://tomnab.fr/todo-api/";
     private String url;
     private List<Utilisateur> utilisateurs;
 
@@ -20,6 +20,8 @@ public class ListeDeUtilisateur implements Serializable {
     public String getUrl() {
         return url;
     }
+
+    public static String getUrlDefault(){return urlDefault;}
 
     public void setUrl(String url) {
         this.url = url;
