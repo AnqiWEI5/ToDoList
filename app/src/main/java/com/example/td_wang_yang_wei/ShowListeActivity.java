@@ -1,4 +1,4 @@
-package com.example.td_wang_yang_wei.ui;
+package com.example.td_wang_yang_wei;
 
 import android.os.Bundle;
 import android.util.Log;

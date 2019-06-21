@@ -8,7 +8,7 @@ public class requestServiceFactory {
         //créer l'objet de retrofit
         Retrofit retrofit = new Retrofit.Builder()
                 //Régler l'url de demande d'envoyer
-                .baseUrl(url)
+                .baseUrl("http://tomnab.fr/todo-api/")
                 //Régler pour utiliser la résolution Gson
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

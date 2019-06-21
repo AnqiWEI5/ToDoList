@@ -1,4 +1,4 @@
-package com.example.td_wang_yang_wei.ui;
+package com.example.td_wang_yang_wei;
 
 
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,17 +16,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.td_wang_yang_wei.DataProvider;
-import com.example.td_wang_yang_wei.api.ListeDeUtilisateur;
-import com.example.td_wang_yang_wei.api.Utilisateur;
 import com.example.td_wang_yang_wei.Database.AppDatabase;
 import com.example.td_wang_yang_wei.Database.Dao.UserDao;
-import com.example.td_wang_yang_wei.R;
-import com.example.td_wang_yang_wei.api.Contenu;
+import com.example.td_wang_yang_wei.Database.Entities.Liste;
+import com.example.td_wang_yang_wei.api.ListeDeUtilisateur;
+import com.example.td_wang_yang_wei.api.Utilisateur;
 import com.example.td_wang_yang_wei.api.requestService;
 import com.example.td_wang_yang_wei.api.requestServiceFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -87,16 +87,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //detect l'état de network
-    public void verifReseau(){
+    public Boolean verifReseau(){
         //obtenir l'objet de connectivityManager
         ConnectivityManager netManager = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo=netManager.getActiveNetworkInfo();
 
         if(networkInfo!=null){
-            btnOk.setEnabled(networkInfo.isConnected());
+            //btnOk.setEnabled(networkInfo.isConnected());
+            return networkInfo.isConnected();
                 }
         else{
-            btnOk.setEnabled(false);
+            return false;
         }
 
     }
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //verifiy l'état de réseau
-        this.verifReseau();
+        // this.verifReseau();
     }
 
     /**
@@ -179,46 +180,96 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     alerter("le pseudo ou passe manque");
                 }
                 else {
-                    //cherchez dans la liste de utilisateurs
-                    // entrez dans la liste correspondante après la vérification de mot de passe
-                    if(listeDeUtilisateur.VerifierPresence(pseudo)){
-                        Utilisateur u=listeDeUtilisateur.ChercheUtilisateur(pseudo);
-                        if(u.verifierMotDePasse(pass))
-                            ConvertToListe(u.getPseudo(),u.getHash(),listeDeUtilisateur.getUrl());
-                         else alerter("Revévifiez votre mot de passe");
-                    }else {
-                        //Si cet utilisateur n'appartient pas à la liste de préférences
-                        //on fait la connexion auprès de l'API Renvoie un hash sans délai d'expiration
-                        //créer un instance de requestService
-                        requestService post_request= requestServiceFactory.createService(listeDeUtilisateur.getUrl(), requestService.class);
+                    if (verifReseau()) {
+                        //cherchez dans la liste de utilisateurs
+                        // entrez dans la liste correspondante après la vérification de mot de passe
+                        if (listeDeUtilisateur.VerifierPresence(pseudo)) {
+                            Utilisateur u = listeDeUtilisateur.ChercheUtilisateur(pseudo);
+                            if (u.verifierMotDePasse(pass)){
+                                //TODO 更新远端
+                                ConvertToListe(u.getPseudo(), u.getHash(), listeDeUtilisateur.getUrl());
+                            }
+                            else alerter("Revévifiez votre mot de passe");
+                        } else {
 
-                        //Encapsuler la requête d'après les règles de Interface requestService
-                        Call<Contenu> call = post_request.authenticate(pseudo,pass);
-                        Log.d("url",""+listeDeUtilisateur.getUrl());
+                            Utilisateur u= null;
+                            try {
+                                u = dataProvider.authenticate(pseudo, pass, new DataProvider.authenticateListener() {
+                                    @Override
+                                    public void onSuccess(Utilisateur utilisateur) {
+                                    }
 
-                        //Envoyer la requête et collecter les résultats
-                        //si succès ajouter cet utilisateur dans la liste de préférences & entrer dans la liste correspondant
-                        call.enqueue(new Callback<Contenu>() {
-                            @Override
-                            public void onResponse(Call<Contenu> call, Response<Contenu> response) {
-                                if(response.isSuccessful()){
-                                    Log.d("hhhhh","true");
-                                    //met à jour la liste de préférences
-                                    listeDeUtilisateur.AjouterUtilisateur(new Utilisateur(pseudo,pass,response.body().hash));
-                                    sauvegarderUtilisateur(listeDeUtilisateur);
-                                    ConvertToListe(pseudo,response.body().hash,listeDeUtilisateur.getUrl());
-                                }else alerter("le nom n'est pas ou le mot de passe est incorrect");
+                                    @Override
+                                    public void onError() {
+
+                                    }
+                                });
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            if(u!=null){
+                                listeDeUtilisateur.AjouterUtilisateur(u);
+                                ConvertToListe(pseudo,u.getHash(),listeDeUtilisateur.getUrl());
+                            }else {
+                                alerter("wrong");
                             }
 
-                            @Override
-                            public void onFailure(Call<Contenu> call, Throwable t) {
-                                alerter("pas de connexion");
+
+
+
+
+
+//                            //Si cet utilisateur n'appartient pas à la liste de préférences
+//                            //on fait la connexion auprès de l'API Renvoie un hash sans délai d'expiration
+//                            //créer un instance de requestService
+//                            requestService post_request = requestServiceFactory.createService(listeDeUtilisateur.getUrl(), requestService.class);
+//
+//                            //Encapsuler la requête d'après les règles de Interface requestService
+//                            Call<Contenu> call = post_request.authenticate(pseudo, pass);
+//                            Log.d("url", "" + listeDeUtilisateur.getUrl());
+//
+//                            //Envoyer la requête et collecter les résultats
+//                            //si succès ajouter cet utilisateur dans la liste de préférences & entrer dans la liste correspondant
+//                            call.enqueue(new Callback<Contenu>() {
+//                                @Override
+//                                public void onResponse(Call<Contenu> call, Response<Contenu> response) {
+//                                    if (response.isSuccessful()) {
+//                                        //met à jour la liste de préférences
+//                                        listeDeUtilisateur.AjouterUtilisateur(new Utilisateur(pseudo, pass, response.body().hash));
+//                                        sauvegarderUtilisateur(listeDeUtilisateur);
+//                                        syncListDeLists(response.body().hash);
+//                                        ConvertToListe(pseudo, response.body().hash, listeDeUtilisateur.getUrl());
+//                                    } else
+//                                        alerter("le nom n'est pas ou le mot de passe est incorrect");
+//                                }
+//
+//                                @Override
+//                                public void onFailure(Call<Contenu> call, Throwable t) {
+//                                    alerter("pas de connexion");
+//                                }
+//                            });
+                        }
+                    } else {
+                        btnSign.setEnabled(false);
+                        if(listeDeUtilisateur!=null){
+                            if (listeDeUtilisateur.VerifierPresence(pseudo)) {
+                                Utilisateur u = listeDeUtilisateur.ChercheUtilisateur(pseudo);
+                                if (u.verifierMotDePasse(pass)){
+
+                                    ConvertToListe(u.getPseudo(), u.getHash(), listeDeUtilisateur.getUrl());
+
+                                }
+                                else alerter("Revévifiez votre mot de passe");
+
                             }
-                        });
+                        }else {
+                            alerter("pas de réseau ni compte local ");
+                        }
+
+
                     }
-                }
-            break;
 
+                }     break;
             case R.id.edtPseudo:
                 alerter("saisir ton pseudo");
             break;
@@ -227,6 +278,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
          }
     }
+
+    private void syncListDeLists(String hash){
+        dataProvider.syncLists(hash, new DataProvider.ListListener() {
+            @Override
+            public void onSuccess(List<Liste> lists) { }
+
+            @Override
+            public void onError() { }
+        });
+    }
+
 
     /**
      * entrer un utilisateur existant

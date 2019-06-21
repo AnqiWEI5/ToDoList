@@ -3,13 +3,12 @@ package com.example.td_wang_yang_wei.Database.Dao;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.td_wang_yang_wei.Database.Entities.Liste;
 
 import java.util.List;
-
-import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface ListDao {
@@ -20,7 +19,7 @@ public interface ListDao {
     @Query("SELECT * FROM listes WHERE user_id LIKE:userId")
     List<Liste> findListByUserId(String userId);
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllListe(Liste...listes);
 
     @Delete

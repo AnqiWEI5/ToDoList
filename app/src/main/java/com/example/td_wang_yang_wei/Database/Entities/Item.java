@@ -1,5 +1,6 @@
 package com.example.td_wang_yang_wei.Database.Entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -13,12 +14,14 @@ import static androidx.room.ForeignKey.CASCADE;
         childColumns = "liste_id",
         onDelete = CASCADE))
 public class Item {
+
     @PrimaryKey
-    public String id;
+    @NonNull
+    public String id;//NOT NULL
 
     public String label;
 
-    public Object url;
+    public String url;
 
     public String checked;
 

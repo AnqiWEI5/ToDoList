@@ -1,5 +1,6 @@
 package com.example.td_wang_yang_wei.Database.Entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
@@ -8,8 +9,11 @@ import androidx.room.PrimaryKey;
 @Entity(indices = {@Index(value = {"id"})},tableName = "users")
 public class User {
 
+
+
     @PrimaryKey
-    public int id;
+    @NonNull
+    public String id;
 
     @ColumnInfo(name = "pseudo")
     public String pseudo;
@@ -17,11 +21,13 @@ public class User {
     @ColumnInfo(name = "motDePasse")
     public String motDePasse;
 
-    public int getId(){
+
+
+    public String getId(){
         return id;
     }
 
-    public void setId(int id){
+    public void setId(String id){
         this.id = id;
     }
 

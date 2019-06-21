@@ -1,5 +1,6 @@
 package com.example.td_wang_yang_wei.Database.Entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -9,7 +10,7 @@ import androidx.room.PrimaryKey;
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "listes",
-        indices = {@Index("name"),@Index(value = {"id"})},
+        indices = {@Index(value = {"id"})},
         foreignKeys = @ForeignKey(entity = User.class,
                 parentColumns = "id",
                 childColumns = "user_id",
@@ -19,8 +20,10 @@ public class Liste {
 
 
         @PrimaryKey
+        @NonNull
         public String id;
 
+        @ColumnInfo(name="label")
         public String label;
 
         @ColumnInfo(name = "user_id")

@@ -40,7 +40,7 @@ public class Converter {
         return liste;
     }
 
-    public List<Liste> from(List<Lists.ListsBean> listesBean) {
+    public List<Liste> listefrom(List<Lists.ListsBean> listesBean) {
         List<Liste> listes = new ArrayList<>(listesBean.size());
         for (Lists.ListsBean listeBean  : listesBean) {
             listes.add(from(listeBean));
@@ -57,7 +57,7 @@ public class Converter {
         return item;
     }
 
-    public List<Item> from(List<Items.ItemsBean> itemsBean) {
+    public List<Item> itemfrom(List<Items.ItemsBean> itemsBean) {
         List<Item> items = new ArrayList<>(itemsBean.size());
         for (Items.ItemsBean itemBean  : itemsBean) {
             items.add(from(itemBean));

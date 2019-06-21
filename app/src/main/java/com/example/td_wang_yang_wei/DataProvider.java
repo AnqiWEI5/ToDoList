@@ -9,9 +9,12 @@ import com.example.td_wang_yang_wei.Database.AppDatabase;
 import com.example.td_wang_yang_wei.Database.Dao.ItemDao;
 import com.example.td_wang_yang_wei.Database.Dao.ListDao;
 import com.example.td_wang_yang_wei.Database.Dao.UserDao;
+import com.example.td_wang_yang_wei.Database.Entities.Item;
+import com.example.td_wang_yang_wei.Database.Entities.Liste;
 import com.example.td_wang_yang_wei.Database.Entities.User;
-import com.example.td_wang_yang_wei.api.ListeDeUtilisateur;
-import com.example.td_wang_yang_wei.api.Users;
+import com.example.td_wang_yang_wei.api.Contenu;
+import com.example.td_wang_yang_wei.api.Lists;
+import com.example.td_wang_yang_wei.api.Utilisateur;
 import com.example.td_wang_yang_wei.api.requestService;
 import com.example.td_wang_yang_wei.api.requestServiceFactory;
 
@@ -41,19 +44,60 @@ public class DataProvider {
         itemDao = AppDatabase.getDatabase(context).itemDao();
     }
 
-    //executor pour le tableau User
-    public void syncUsers(final UsersListener listener){
+    //autenticate
+    public Utilisateur authenticate(final String username,final String password,final authenticateListener listener) throws IOException {
+        final Utilisateur[] utilisateur=new Utilisateur[1];
+        Future future=Utils.BACKGROUND.submit((new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    Response<Contenu> response=service.authenticate(username,password).execute();
+                    if(response.isSuccessful()){
+                        utilisateur[0] = new Utilisateur(username,password,response.body().hash);
+                        uiHandler.post(new Runnable() {
+                            @Override public void run() {
+                                listener.onSuccess(utilisateur[0]);
+                            }
+                        });
+                    }
+                    else {
+                        uiHandler.post(new Runnable() {
+                            @Override public void run() {
+                                listener.onError();
+                            }
+                        });
+                        utilisateur[0] =null;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
+
+//        Response<Contenu> response=service.authenticate(username,password).execute();
+//        if(response.isSuccessful()){
+//            utilisateur = new Utilisateur(username,password,response.body().hash);
+//                    }
+//        else utilisateur=null;
+            return utilisateur[0];
+    }
+
+
+    //executor pour le tableau List
+    public void syncLists(final String hash,final ListListener listener){
         Future future = Utils.BACKGROUND.submit(new Runnable() {
             @Override public void run() {
                 try {
-                    String hash = "b10ab07311337e6484153b0f5793d516";
-                    Response<Users> response = service.getUsers(hash).execute();
+                    Response<Lists> response = service.getLists(hash).execute();
                     if( response.isSuccessful()) {
-                        final List<User> users = converter.from(response.body().getUsers());
-                        userDao.save(users);
+                        final List<Liste> liste = converter.listefrom(response.body().getLists());
+                        for(Liste i:liste){
+                            listDao.insertAllListe(i);
+                        }
                         uiHandler.post(new Runnable() {
                             @Override public void run() {
-                                listener.onSuccess(users);
+                                listener.onSuccess(liste);
                             }
                         });
 
@@ -88,6 +132,13 @@ public class DataProvider {
         futures.clear();
     }
 
+    public List<Liste>loadListe(){
+        return listDao.getAllLists();
+    }
+
+
+
+
     public List<User> loadUser() {
         return userDao.getAllUsers();
     }
@@ -99,6 +150,27 @@ public class DataProvider {
     private interface UsersListener {
         @UiThread
         public void onSuccess(List<User> users);
+        @UiThread
+        public void onError();
+    }
+
+    public interface ListListener{
+        @UiThread
+        public void onSuccess(List<Liste> lists);
+        @UiThread
+        public void onError();
+    }
+
+
+    public interface itemListener{
+        @UiThread
+        public void onSuccess(List<Item> items);
+        @UiThread
+        public void onError();
+    }
+    public interface authenticateListener{
+        @UiThread
+        public void onSuccess(Utilisateur utilisateur);
         @UiThread
         public void onError();
     }

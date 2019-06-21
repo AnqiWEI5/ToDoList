@@ -2,8 +2,6 @@ package com.example.td_wang_yang_wei.api;
 
 import java.util.List;
 
-import static java.sql.Types.NULL;
-
 public class Users {
     /**
      * version : 1
@@ -25,13 +23,13 @@ public class Users {
         this.version = version;
     }
 
-    public int getUserId(String pseudo) {
+    public String getUserId(String pseudo) {
         for (UsersBean u: users) {
             if (u.getPseudo().equals(pseudo)){
                 return u.getId();
             }
         }
-        return NULL;
+        return "";
     }
 
     public List<UsersBean> getUsers() {
@@ -44,14 +42,14 @@ public class Users {
          * pseudo : wwy
          */
 
-        private int id;
+        private String id;
         private String pseudo;
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
