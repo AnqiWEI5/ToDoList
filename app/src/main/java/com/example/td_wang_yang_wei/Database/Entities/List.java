@@ -18,6 +18,7 @@ import static androidx.room.ForeignKey.CASCADE;
 public class List {
 
     @PrimaryKey
+    @NonNull
     public String id;
 
     public String label;
